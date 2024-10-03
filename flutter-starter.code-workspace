@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "psi-header.changes-tracking": {
+      "autoHeader": "manualSave",
+      "enforceHeader": true,
+      "isActive": true
+    },
+    "psi-header.config": {
+      "forceToTop": true,
+      "author": "Luca Biasotto",
+      "authorEmail": "https://github.com/lucabiasotto/"
+    },
+    "psi-header.templates": [
+      {
+        "language": "*",
+        "template": [
+          "Project: Flutter Starter",
+          "File: <<filename>>",
+          "",
+          "Created: <<filecreated('YYYY-MM-DD')>> by <<author>> (<<authoremail>>)",
+          "",
+          "Copyright (c) 2024 - <<year>>, <<company>>"
+        ],
+        "changeLogCaption": "HISTORY:",
+        "changeLogHeaderLineCount": 2,
+        "changeLogEntryTemplate": ["<<dateformat('YYYY-MM-DD')>>\t<<initials>>\t"]
+      }
+    ]
+  }
+}
