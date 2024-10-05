@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:app/controllers/controller.dart';
 import 'package:app/controllers/settings.dart';
 import 'package:app/widgets/home/home.dart';
@@ -5,9 +7,11 @@ import 'package:app/theme/theme.dart';
 import 'package:app/translations/translation.dart';
 import 'package:app/widgets/onboarding/onboarding.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logging/logging.dart';
 
 Locale locale = const Locale('en', 'US');
 final List appLanguages = [
@@ -16,20 +20,25 @@ final List appLanguages = [
 ];
 
 void main() async {
-  //Init firebase / Analytics
-  /*
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  FirebaseAnalytics.instance.logAppOpen();
-  */
+  //Init logging
+  Logger.root.level = kDebugMode ? Level.FINE : Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    dev.log(
+      record.message,
+      time: record.time,
+      level: record.level.value,
+      name: record.loggerName,
+    );
+  });
 
-  //Inizializza i controller
+  final _log = Logger('main');
+  _log.fine("Starting app...");
+
+  //Init settings
   final SettingsCtrl settings = Get.put(SettingsCtrl());
   settings.loadSettings();
 
-  final Controller game = Get.put(Controller());
+  final Controller controller = Get.put(Controller());
   //game.loadSettings();
 
   runApp(const MyApp());

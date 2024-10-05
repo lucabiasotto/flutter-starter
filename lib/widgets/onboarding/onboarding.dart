@@ -12,12 +12,15 @@ import 'package:app/controllers/settings.dart';
 import 'package:app/widgets/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logging/logging.dart';
 
 class Onboarding extends StatelessWidget {
   Onboarding({super.key});
 
   // You can ask Get to find a Controller that is being used by another page and redirect you to it.
   final Controller c = Get.find();
+
+  static final _log = Logger('Onboarding');
 
   @override
   Widget build(context) {
@@ -30,6 +33,7 @@ class Onboarding extends StatelessWidget {
         child: ElevatedButton(
           child: const Text("Go to Home"),
           onPressed: () {
+            _log.fine("Go to Home");
             SettingsCtrl.to.setOnboardingDone(true);
             Get.off(
               () => const Home(),

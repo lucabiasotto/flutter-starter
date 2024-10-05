@@ -6,6 +6,7 @@ A Starter template for Flutter app.
 
 1. State management with GetX.
 1. Routing with GetX.
+1. Logging library
 1. Translations:
    1. Put all translations in the `lib/translations/Translation` file
    1. Contains a simple settings screen for change language.
