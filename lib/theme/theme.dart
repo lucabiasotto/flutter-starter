@@ -2,54 +2,60 @@
  * Project: Flutter Starter
  * File: theme.dart
  * 
+ * 
+ * This theme manages both light and dark themes, ensuring that the primary
+ * color is the same for both.
+ * 
+ * 
  * Created: 2024-09-30 by Luca Biasotto (https://github.com/lucabiasotto/)
  * 
  * Copyright (c) 2024 - 2024, Luca Biasotto
  */
 
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+const Color paletteColor1 =  Color.fromRGBO(243, 96, 13, 1);
+const Color paletteColor2 = Color(0xFF9BC26D);
+const Color paletteColor3 = Color(0xFFddd997);
+const Color paletteColor4 = Color(0xFF575531);
+const Color primarytColor = paletteColor1;
 
 final ThemeData baseLigth = ThemeData.light(useMaterial3: true);
 final ThemeData baseDark = ThemeData.dark(useMaterial3: true);
 
-const Color lightColor = Colors.white;
-const Color darkColor = Color.fromARGB(221, 19, 19, 19); //Color.fromRGBO(30, 30, 30, 1);
-
 ColorScheme colorSchemeLight = ColorScheme.fromSeed(
-  seedColor: const Color.fromRGBO(243, 96, 13, 1),
+  seedColor: primarytColor,
   brightness: Brightness.light,
-);
-ColorScheme colorSchemeDark = ColorScheme.fromSeed(
-  seedColor: const Color.fromRGBO(103, 58, 183, 1),
-  brightness: Brightness.dark,
+).copyWith(
+  primary: primarytColor, //mi assicuro che il primario non venga sovrascritto
 );
 
-ThemeData getLightTheme(Color? color, ColorScheme? colorScheme) {
-  color ??= lightColor;
-  final cardColor = darken(color, 5);
+ColorScheme colorSchemeDark = ColorScheme.fromSeed(
+  seedColor: primarytColor,
+  brightness: Brightness.dark,
+).copyWith(
+  primary: primarytColor, //mi assicuro che il primario non venga sovrascritto
+);
+
+const appBarThemeBase = AppBarTheme(
+  backgroundColor: primarytColor,
+);
+
+/// Returns the light theme for the application.
+ThemeData getLightTheme() {
+  final cardColor = baseLigth.colorScheme.surface; //darken(baseLigth.colorScheme.background, 5);
 
   return baseLigth.copyWith(
+    textTheme: GoogleFonts.nunitoTextTheme(baseLigth.textTheme),
     brightness: Brightness.light,
-    colorScheme: colorScheme
-        ?.copyWith(
-          brightness: Brightness.light,
-          background: color,
-          surface: baseLigth.colorScheme.background,
-        )
-        .harmonized(),
-    textTheme: GoogleFonts.ubuntuTextTheme(baseLigth.textTheme),
-    appBarTheme: AppBarTheme(
-      //backgroundColor: color,
-      //foregroundColor: baseLigth.colorScheme.onSurface,
-      //shadowColor: Colors.transparent,
-      //surfaceTintColor: Colors.transparent,
-      elevation: 2,
+    primaryColor: primarytColor,
+    primaryColorDark: darken(primarytColor, 50),
+    primaryColorLight: lighten(primarytColor, 50),
+    colorScheme: colorSchemeLight,
+    appBarTheme: appBarThemeBase.copyWith(
+      foregroundColor: Colors.white,
     ),
-    primaryColor: color,
-    canvasColor: color,
-    scaffoldBackgroundColor: color,
     cardColor: cardColor,
     cardTheme: baseLigth.cardTheme.copyWith(
       color: cardColor,
@@ -58,80 +64,30 @@ ThemeData getLightTheme(Color? color, ColorScheme? colorScheme) {
       ),
       shadowColor: Colors.transparent,
     ),
-    bottomSheetTheme: baseLigth.bottomSheetTheme.copyWith(
-      backgroundColor: color,
-    ),
-    navigationRailTheme: baseLigth.navigationRailTheme.copyWith(
-      backgroundColor: color,
-    ),
-    navigationBarTheme: baseLigth.navigationBarTheme.copyWith(
-      backgroundColor: color,
-    ),
-    inputDecorationTheme: baseLigth.inputDecorationTheme.copyWith(
-      labelStyle: MaterialStateTextStyle.resolveWith(
-        (Set<MaterialState> states) {
-          return const TextStyle(fontSize: 14);
-        },
-      ),
-      border: InputBorder.none,
-      focusedBorder: InputBorder.none,
-      enabledBorder: InputBorder.none,
-    ),
-    indicatorColor: Colors.black,
   );
 }
 
-ThemeData getDarkTheme(Color? color, ColorScheme? colorScheme) {
-  color ??= darkColor;
-  final cardColor = lighten(color, 5);
+/// Returns the dark theme for the application.
+ThemeData getDarkTheme() {
+  final cardColor = baseDark.colorScheme.surface; //lighten(baseDark.colorScheme.background, 5);
 
   return baseDark.copyWith(
+    textTheme: GoogleFonts.nunitoTextTheme(baseDark.textTheme),
     brightness: Brightness.dark,
-    colorScheme: colorScheme
-        ?.copyWith(
-          brightness: Brightness.dark,
-          background: color,
-          surface: baseDark.colorScheme.background,
-        )
-        .harmonized(),
-    textTheme: GoogleFonts.ubuntuTextTheme(baseDark.textTheme),
-    appBarTheme: AppBarTheme(
-      //backgroundColor: color,
-      //foregroundColor: baseDark.colorScheme.onSurface,
-      //shadowColor: Colors.transparent,
-      //surfaceTintColor: Colors.transparent,
-      elevation: 2,
+    primaryColor: primarytColor,
+    primaryColorDark: darken(primarytColor, 50),
+    primaryColorLight: lighten(primarytColor, 50),
+    colorScheme: colorSchemeDark,
+    appBarTheme: appBarThemeBase.copyWith(
+      foregroundColor: Colors.black,
     ),
-    primaryColor: color,
-    canvasColor: color,
-    scaffoldBackgroundColor: color,
     cardColor: cardColor,
-    cardTheme: baseDark.cardTheme.copyWith(
-      elevation: 0,
+    cardTheme: baseLigth.cardTheme.copyWith(
       color: cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
       shadowColor: Colors.transparent,
-    ),
-    bottomSheetTheme: baseDark.bottomSheetTheme.copyWith(
-      backgroundColor: color,
-    ),
-    navigationRailTheme: baseDark.navigationRailTheme.copyWith(
-      backgroundColor: color,
-    ),
-    navigationBarTheme: baseDark.navigationBarTheme.copyWith(
-      backgroundColor: color,
-    ),
-    inputDecorationTheme: baseDark.inputDecorationTheme.copyWith(
-      labelStyle: MaterialStateTextStyle.resolveWith(
-        (Set<MaterialState> states) {
-          return const TextStyle(fontSize: 14);
-        },
-      ),
-      border: InputBorder.none,
-      focusedBorder: InputBorder.none,
-      enabledBorder: InputBorder.none,
     ),
   );
 }

@@ -1,7 +1,15 @@
+/*
+ * Project: Flutter Starter
+ * File: main.dart
+ * 
+ * Created: 2024-09-29 by Luca Biasotto (https://github.com/lucabiasotto/)
+ * 
+ * Copyright (c) 2024 - 2025, Luca Biasotto
+ */
 import 'dart:developer' as dev;
 
-import 'package:app/controllers/controller.dart';
-import 'package:app/controllers/settings.dart';
+import 'package:app/controllers/app_controller.dart';
+import 'package:app/controllers/settings_controller.dart';
 import 'package:app/widgets/home/home.dart';
 import 'package:app/theme/theme.dart';
 import 'package:app/translations/translation.dart';
@@ -20,6 +28,8 @@ final List appLanguages = [
 ];
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   //Init logging
   Logger.root.level = kDebugMode ? Level.FINE : Level.INFO;
   Logger.root.onRecord.listen((record) {
@@ -31,15 +41,15 @@ void main() async {
     );
   });
 
-  final _log = Logger('main');
-  _log.fine("Starting app...");
+  final log = Logger('main');
+  log.fine("🚀 Starting app...");
+
+  log.fine("🕹️ Inizializing controllers...");
 
   //Init settings
-  final SettingsCtrl settings = Get.put(SettingsCtrl());
-  settings.loadSettings();
+  Get.put(SettingsController());
 
-  final Controller controller = Get.put(Controller());
-  //game.loadSettings();
+  Get.put(AppController());
 
   runApp(const MyApp());
 }
@@ -51,26 +61,37 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (lightColorScheme, darkColorScheme) {
+        /*
+        Decommento to use device material color
+
         final lightTheme = getLightTheme(lightColor, colorSchemeLight);
         final lightMaterialTheme = getLightTheme(lightColorScheme?.surface, lightColorScheme);
 
         final darkTheme = getDarkTheme(darkColor, colorSchemeDark);
         final darkMaterialTheme = getDarkTheme(darkColor, darkColorScheme);
 
+        final appTheme = SettingsController.to.materialColor
+            ? lightColorScheme != null
+                ? lightMaterialTheme
+                : lightTheme
+            : lightTheme;
+
+        final appDarkTheme = SettingsController.to.materialColor
+            ? darkColorScheme != null
+                ? darkMaterialTheme
+                : darkTheme
+            : darkTheme;
+          */
+
+        final appTheme = getLightTheme();
+        final appDarkTheme = getDarkTheme();
+
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           //theme
-          themeMode: SettingsCtrl.to.theme,
-          theme: SettingsCtrl.to.materialColor
-              ? lightColorScheme != null
-                  ? lightMaterialTheme
-                  : lightTheme
-              : lightTheme,
-          darkTheme: SettingsCtrl.to.materialColor
-              ? darkColorScheme != null
-                  ? darkMaterialTheme
-                  : darkTheme
-              : darkTheme,
+          themeMode: SettingsController.to.theme,
+          theme: appTheme,
+          darkTheme: appDarkTheme,
           //language
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -79,9 +100,9 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: appLanguages.map((e) => e['locale'] as Locale).toList(),
           translations: Translation(), // your translations
-          locale: SettingsCtrl.to.language,
+          locale: SettingsController.to.language,
           fallbackLocale: const Locale('en', 'US'), // specify the fallback locale in case an invalid locale is selected.
-          home: SettingsCtrl.to.onboardingDone ? const Home() : Onboarding(),
+          home: SettingsController.to.onboardingDone ? const Home() : Onboarding(),
         );
       },
     );

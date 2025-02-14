@@ -7,7 +7,7 @@
  * Copyright (c) 2024 - 2024, Luca Biasotto
  */
 
-import 'package:app/controllers/settings.dart';
+import 'package:app/controllers/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +15,7 @@ class Settings extends StatelessWidget {
   Settings({super.key});
 
   // You can ask Get to find a Controller that is being used by another page and redirect you to it.
-  final SettingsCtrl settings = Get.find();
+  final SettingsController settings = Get.find();
 
   @override
   Widget build(context) {
