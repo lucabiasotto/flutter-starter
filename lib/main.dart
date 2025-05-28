@@ -102,7 +102,9 @@ class MyApp extends StatelessWidget {
           translations: Translation(), // your translations
           locale: SettingsController.to.language,
           fallbackLocale: const Locale('en', 'US'), // specify the fallback locale in case an invalid locale is selected.
-          home: SettingsController.to.onboardingDone ? const Home() : Onboarding(),
+          home: Obx(
+            () => SettingsController.to.onboardingDone.value ? const Home() : Onboarding(),
+          ),
         );
       },
     );

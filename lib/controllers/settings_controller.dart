@@ -28,7 +28,7 @@ class SettingsController extends GetxController {
   var language = Get.deviceLocale ?? const Locale('en', 'US');
   var theme = ThemeMode.system;
   var materialColor = false;
-  var onboardingDone = false;
+  var onboardingDone = false.obs;
 
   void _init() async {
     _log.fine("🕹️ Load settings from preferences...");
@@ -52,7 +52,7 @@ class SettingsController extends GetxController {
 
     bool? onboardingDone = prefs.getBool('onboardingDone');
     if (onboardingDone != null) {
-      this.onboardingDone = onboardingDone;
+      this.onboardingDone.value = onboardingDone;
     }
   }
 
@@ -75,6 +75,6 @@ class SettingsController extends GetxController {
   void setOnboardingDone(bool value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboardingDone', value);
-    onboardingDone = value;
+    onboardingDone.value = value;
   }
 }
