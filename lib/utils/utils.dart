@@ -6,10 +6,11 @@
  * 
  * Copyright (c) 2024 - 2024, Luca Biasotto
  */
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+// Export delle utilità responsive
+export 'responsive_utils.dart';
 
 /// Shows a dialog and resolves to true when the user has indicated that they
 /// want to pop.
