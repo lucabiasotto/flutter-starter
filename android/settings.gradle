@@ -1,4 +1,11 @@
-pluginManagement {
+/*
+ * Project: Flutter Starter
+ * File: settings.gradle
+ * 
+ * Created: 2024-09-29 by Luca Biasotto (https://github.com/lucabiasotto/)
+ * 
+ * Copyright (c) 2024 - 2025, Luca Biasotto
+ */pluginManagement {
     def flutterSdkPath = {
         def properties = new Properties()
         file("local.properties").withInputStream { properties.load(it) }
@@ -19,7 +26,7 @@ pluginManagement {
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "8.1.0" apply false
+    id "com.android.application" version "8.5.1" apply false
     id "org.jetbrains.kotlin.android" version "1.9.10" apply false
 }
 
